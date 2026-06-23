@@ -37,7 +37,8 @@ class LibroDAO:
         """
 
         cursor.execute(sql,
-                       (libro.titulo,
+                       (libro.id,
+                        libro.titulo,
                         libro.autor,
                         libro.isbn,
                         libro.disponible))
@@ -81,7 +82,7 @@ class LibroDAO:
         conexion.close()
 
     def obtener_ultimo_id(self):
-        conexion = conexion_obtener_conexion()
+        conexion = Conexion.obtener_conexion()
         cursor = conexion.cursor()
 
         cursor.execute("SELECT id FROM libro ORDER BY id DESC")
