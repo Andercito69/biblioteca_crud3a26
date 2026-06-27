@@ -1,5 +1,5 @@
-from dao.libro_dao import LibroDAO
-from models.libro import Libro
+from dao.unidad_dao import UnidadDAO
+from models.unidad import Unidad
 
 
 def ver_libros():
@@ -59,16 +59,29 @@ def actualizar_libro():
           print("Error al actualizar un libro")
           print(e)
 
-def eliminar_libro():
+def ver_unidades():
      try:
-          libro_dao = LibroDAO()
-          print("Lista de libros disponibles:")
-          ver_libros()
-          id = int(input("Escribe el id del libro a eliminar: "))
-          libro_dao.eliminar(id)
-          print("El libro {id} ha sido eliminado con exito") 
+          unidad_dao = UnidadDAO()
+          unidades = unidad_dao.obtener_todos()
+
+          print("=== Unidades en la base de datos ===")
+
+          if len(unidades) == 0:
+                 print("No hay unidades registradas.")
+
+          else:
+            print("Lista de unidades disponibles:")
+          for unidad in unidades:
+              print("----------------------------------------------")
+              print(
+                  f"ID: {unidad.id}, No. Economico: {unidad.noeconomico},"
+                  f"Placas: {unidad.placas}, Modelo: {unidad.modelo},"
+                  f"Marca: {unidad.marca}, Año: {unidad.anio},"
+                  f"Kilometraje: {unidad.kilometraje}, Estatus: {unidad.estatus}"
+              )
+              print("----------------------------------------------")
      except Exception as e:
-          print("Error al eliminar el libro {id}")
+          print("Error al ver las unidades")
           print(e)
 
 def main():
@@ -78,7 +91,8 @@ def main():
     print("2, Insertar un nuevo libro")
     print("3, Actualizar un libro disponible")
     print("4, Eliminar un libro disponible")
-    opcion = int(input("selecciona una opcion (1-4): "))
+    print("5, Ver todas las unidades disponibles")
+    opcion = int(input("selecciona una opcion (1-5): "))
 
     match opcion:
          case 1:
@@ -88,7 +102,9 @@ def main():
          case 3:
               actualizar_libro()
          case 4:
-              eliminar_libro()          
+              eliminar_libro()     
+         case 5:
+                 ver_unidades()
 
 
 
