@@ -1,6 +1,7 @@
-from dao.unidad_dao import UnidadDAO
-from models.unidad import Unidad
-
+from dao.libro_dao import LibroDAO
+from models.libro import Libro
+from models.usuario import Usuario
+from dao.usuario_dao import UsuarioDAO
 
 def ver_libros():
  try:    
@@ -59,40 +60,24 @@ def actualizar_libro():
           print("Error al actualizar un libro")
           print(e)
 
-def ver_unidades():
+def eliminar_libro():
      try:
-          unidad_dao = UnidadDAO()
-          unidades = unidad_dao.obtener_todos()
-
-          print("=== Unidades en la base de datos ===")
-
-          if len(unidades) == 0:
-                 print("No hay unidades registradas.")
-
-          else:
-            print("Lista de unidades disponibles:")
-          for unidad in unidades:
-              print("----------------------------------------------")
-              print(
-                  f"ID: {unidad.id}, No. Economico: {unidad.noeconomico},"
-                  f"Placas: {unidad.placas}, Modelo: {unidad.modelo},"
-                  f"Marca: {unidad.marca}, Año: {unidad.anio},"
-                  f"Kilometraje: {unidad.kilometraje}, Estatus: {unidad.estatus}"
-              )
-              print("----------------------------------------------")
+          libro_dao = LibroDAO()
+          print("Lista de libros disponibles: ")
+          ver_libros()
+          id = int(input("Escribe el id del libro a eliminar: "))
+          libro_dao.eliminar(id)
+          print(f"El libro {id} se ha eliminado con exito")
      except Exception as e:
-          print("Error al ver las unidades")
+          print(f"Error al eliminar el libro {id}")
           print(e)
 
-def main():
-    print("=== BIBLIOTECA UNIVERSITARIA ===")
-    print("Menu de opciones")
+def menu_libros():
     print("1, Ver todos los libros")
     print("2, Insertar un nuevo libro")
     print("3, Actualizar un libro disponible")
     print("4, Eliminar un libro disponible")
-    print("5, Ver todas las unidades disponibles")
-    opcion = int(input("selecciona una opcion (1-5): "))
+    opcion = int(input("selecciona una opcion (1-4): "))
 
     match opcion:
          case 1:
@@ -102,12 +87,110 @@ def main():
          case 3:
               actualizar_libro()
          case 4:
-              eliminar_libro()     
-         case 5:
-                 ver_unidades()
+              eliminar_libro()
 
 
+###USUARIOS###
+def ver_usuarios():
+    try:    
+        usuario_dao = UsuarioDAO()
+
+        usuarios = usuario_dao.obtener_todos()
+
+        print("=== Usuarios en la base de datos ===")
+
+        if len(usuarios) == 0:
+            print("No hay usuarios registrados.")
+        else:
+            for usuario in usuarios:
+                print("----------------------------------------------")
+                print(
+                    f"ID: {usuario.id}, Nombre: {usuario.nombre},"
+                    f"Matricula: {usuario.matricula}, Carrera: {usuario.carrera},"
+                    f"Correo: {usuario.correo}, Activo: {'Si' if usuario.activo else 'No'}"
+                )
+                print("----------------------------------------------")
+        print("\nConexion exitosa a la base de datos.")
+    except Exception as e:
+        print(f"Error: ")
+        print(e)
+
+def insertar_usuarios():
+    nombre = input("Escribe el nombre del nuevo usuario: ")
+    matricula = input("Escribe la matricula del nuevo usuario: ")
+    carrera = input("Escribe la carrera del nuevo usuario: ")
+    correo = input("Escribe el correo del nuevo usuario: ")
+    activo = True
+    try:
+        usuario_dao = UsuarioDAO()
+        id = usuario_dao.obtener_ultimo_id() + 1
+        usuario = Usuario(id, nombre, matricula, carrera, correo, activo)
+        usuario_dao.insertar(usuario)
+        print("Insercion realizada correctamente.")
+    except Exception as e:
+        print("Error al insertar un nuevo usuario: ")
+        print(e)
+
+def actualizar_usuarios():
+    print("Selecciona el usuario a actualizar")
+    try:
+        usuario_dao = UsuarioDAO()
+        ver_usuarios()
+        id = int(input("Escribe el id del usuario a actualizar: "))
+        nombre = input("Escribe el nuevo nombre del usuario: ")
+        matricula = input("Escribe la nueva matricula del usuario: ")
+        carrera = input("Escribe la nueva carrera del usuario: ")
+        correo = input("Escribe el nuevo correo del usuario: ")
+        activo = bool(input("Escribe el nuevo valor de activo: "))
+        usuario = Usuario(id, nombre, matricula, carrera, correo, activo)
+        usuario_dao.actualizar(usuario)
+        print(f'El usuario con ID {id} ha sido actualizado correctamente')
+    except Exception as e:
+            print("Error al actualizar un usuario")
+            print(e)
+
+def eliminar_usuarios():
+    try:
+        usuario_dao = UsuarioDAO()
+        print("Lista de usuarios disponibles:")
+        ver_usuarios()
+        id = int(input("Escribe el id del usuario a eliminar: "))
+        usuario_dao.eliminar(id)
+        print(f"El usuario {id} ha sido eliminado con exito")
+    except Exception as e:
+        print(f"Error al eliminar el usuario {id}")
+        print(e)
+
+def menu_usuarios():
+    print("1. Ver todos los usuarios")
+    print("2. Insertar un nuevo usuario")
+    print("3. Actualizar un usuario")
+    print("4. Eliminar un usuario")
+    opcion = int(input("Seleciona una opcion (1-4): "))
+
+    match opcion:
+        case 1:
+            ver_usuarios()
+        case 2:
+            insertar_usuarios()
+        case 3:
+            actualizar_usuarios()
+        case 4:
+            eliminar_usuarios()
 
 
-if __name__ == "__main__":
+def main():
+    print("=== BIBLIOTECA UNIVERSITARIA ===")
+    print("Menu de opciones")
+    print("1.Menu de libros")
+    print("2.Menu de usuarios")
+    opcion = int(input("Selecciona una opcion (1-2): "))
+
+    match opcion:
+        case 1:
+            menu_libros()
+        case 2:
+            menu_usuarios()
+         
+if __name__ == "__main__":   
     main()
