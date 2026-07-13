@@ -1,44 +1,45 @@
 import flet as ft
 
-def main_window(page: ft.page):
+def main_window(page: ft.Page):
     page.title = "Sistema de Biblioteca Universitaria"
     page.window_width = 1100
     page.window_height = 700
     page.padding = 0
-    page.bgcolor = ft.colors.BLUE_GREY_50 
+    page.bgcolor = ft.Colors.BLUE_GREY_50 
 
     # Ejemplo de widget: Text  
-    titulo = ft.Text("Sistema de Biblioteca Universitaria", size=30, weight=ft.FontWeight.BOLD, color=ft.colors.BLUE_GREY_900)
+    titulo = ft.Text("Sistema de Biblioteca Universitaria", size=30, weight=ft.FontWeight.BOLD, color=ft.Colors.BLUE_GREY_900)
 
-    subtitulo = ft.Text (
-        "Selecciona una opcion del menu";
-        size = 16;
-        color = ft.colors.BLUE_GREY_600
+    subtitulo = ft.Text(
+        "Selecciona una opcion del menu",
+        size = 16,
+        color = ft.Colors.BLUE_GREY_600
     )
 
     # Widget container
-    contenidor = ft.Container(
-        content = ft.Container(
+    contenido = ft.Container(
+        content = ft.Column(
             controls = [
                 titulo,
                 subtitulo
             ],
             spacing = 10
-        )
+        ),
         padding = 30,
         expand = True
     )
 
     menu_lateral = ft.Container(
         width = 220,
-        bgcolor = ft.colors.BLUE_GREY_900,
+        bgcolor = ft.Colors.BLUE_GREY_900,
         padding = 20,
         content = ft.Column(
             controls = [
                 ft.Text(
-                    "Biblioteca"
+                    "Biblioteca",
                     size = 22,
-                    color = ft.colors.WHITE,
+                    weight = ft.FontWeight.BOLD,
+                    color = ft.Colors.WHITE
                  ),
                  ft.Text(
                      "Sistema de gestion",
@@ -47,34 +48,34 @@ def main_window(page: ft.page):
                  ),
                  ft.Divider(color = ft.Colors.BLUE_GREY_700),
                  ft.ElevatedButton(
-                     text = "Libros",
+                     "Libros",
                      icon = ft.Icons.BOOK,
                      width = 180,
                  ),
                  ft.ElevatedButton(
-                     text = "Usuarios",
+                     "Usuarios",
                      icon = ft.Icons.PERSON,
                      width = 180,
                  ),
                  ft.ElevatedButton(
-                     text = "Prestamos",
+                     "Prestamos",
                      icon = ft.Icons.SWAP_HORIZ,
                      width = 180,
                  ),
                  ft.ElevatedButton(
-                     text = "Devoluciones",
+                     "Devoluciones",
                      icon = ft.Icons.KEYBOARD_RETURN,
                      width = 180,
                  ),
             ],
-            Spacing = 15
+            spacing = 15
         )
     )
 
     layout = ft.Row(
         controls = [
             menu_lateral,
-            contenidor
+            contenido
         ],
         expand = True
     )
